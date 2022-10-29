@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue2</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{count}}</h1>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        //console.log(Vue);
+
+        //寫法一
+        // new Vue({
+        //     data:{
+        //         count:1
+        //     },
+        //     el:'#app'
+        // })
+
+        // //寫法二  先定義常數
+        // const App = new Vue({
+        //     data:{
+        //         count:1
+        //     },
+        //     el:'#app'
+        // })
+
+        //寫法三  先定義常數,改變mount方式
+        const App = new Vue({
+            data:{
+                count:1
+            },
+        })
+        App.$mount('#app')
+
+    </script>
+    <!-- <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        console.log(Vue);
+        Vue.createApp({
+            data(){
+                return{
+                    count:1,
+                    name:'overcast',
+                    food:'薯條',
+                    talk:true,
+                    array:[1,2,3],
+                    obj:{test:'123'},
+                }
+            }
+        }).mount('#app')
+    </script> -->
+
+</body>
+</html>

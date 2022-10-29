@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue3</title>
+</head>
+<body>
+    <div id="app">
+        //  雙花括號是板模語言
+        //  作用域 scope
+        <h1>{{ typeof count}}</h1>
+        <hr>
+        <p>{{name}}想吃{{food}}</p>
+        <div>{{talk ? '囉嗦' : '自閉'}}</div>
+        <div>{{array}}</div>
+        <div>{{obj}}</div>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <script>
+        // 新增一個應用application→建立Vue實體(instance)
+        console.log(Vue);
+        Vue.createApp({
+            data(){
+                return{
+                    count:1,
+                    name:'overcast',
+                    food:'薯條',
+                    talk:true,
+                    array:[1,2,3],
+                    obj:{test:'123'},
+                }
+            }
+        }).mount('#app')//並掛載(mount)在網頁結點上(id='app')
+    </script>
+</body>
+</html>
