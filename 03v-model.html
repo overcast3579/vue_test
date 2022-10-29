@@ -5,10 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vue3</title>
+    <style>
+        #app{
+            padding: 10px;
+            border: 1px solid blue;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <h1>{{ typeof count}}</h1>
+        <h1 data-mode="dark">{{title}}</h1>
+        <h6>${{price}}</h6>
+        <div>
+            <button @click="reduceCount">-</button>
+            <!-- <input type="number" v-model="count"> -->
+            <input type="text" v-model.number="count">
+            <button @click="addCount">+</button>
+        </div>
+        <button>Add</button>
+        <p>總計:{{total}}元</p>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
@@ -16,7 +32,24 @@
         Vue.createApp({
             data(){
                 return{
-                    count:1,
+                    title:'我是一個商品',
+                    price:100,
+                    count:0,
+                    total:0,
+                }  
+            },
+            methods:{
+                addCount(){
+                    this.count += 1
+                    this.sumTotal()
+                },
+                reduceCount(){
+                    if(this.count <= 0) return
+                    this.count -=1
+                    this.sumTotal()
+                },
+                sumTotal(){
+                    this.total = this.count * this.price
                 }
             }
         }).mount('#app')
