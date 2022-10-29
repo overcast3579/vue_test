@@ -69,15 +69,15 @@
                             }
                         }
                     ],
-                    count:[0,0],
+                    count:[],
                     total:0,
                 }  
             },
             mounted() {
                 //第一種:初始化商品數量
-                // this.product.map(item=>{
-                //     this.count.push(0)
-                // })
+                this.product.map(item=>{
+                    this.count.push(0)
+                })
                 //第二種
                 // this.product.map(item=>{
                 //     this.count.push({
@@ -100,7 +100,7 @@
                     this.total = 0
                     //this.total +=this.count[0]*this.product[0]['price']
                     //this.total +=this.count[1]*this.product[1]['price']
-                    for(countIndex in this.count){
+                    for( const countIndex in this.product){
                         this.total += this.count[countIndex] * this.product[countIndex]['price']
                     }
                     this.total = parseInt(this.total)
