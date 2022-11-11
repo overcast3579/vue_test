@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue3</title>
+    <style>
+        #app{
+            padding: 10px;
+            border: 1px solid blue;
+            text-align: center;
+        }
+        .product_container{
+            display: flex;
+        }
+        img{
+            width:5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- <div class="pagination">
+            <button v-for="page in 10" :key="page">{{page}}</button>
+        </div> -->
+        <header>
+            search:<input type="text" v-model="search"><br>
+            篩選出大於: $<input type="number" v-model="min">-<input type="number" v-model="max">$的商品
+        </header>
+
+        <div v-if="load">loading...</div>
+        <div v-else class="product_container">
+            <div v-for="(item, index) in product" :key="item.id">
+                <p>{{item.title}}</p>
+                <img :src="item.image" :alt="item.title">
+                <h6>${{item.price}}</h6>
+                <div>
+                    <button @click="reduceCount(index)">-</button>
+                    <input type="number" min="0" v-model="count[index]">
+                    <button @click="addCount(index)">+</button>
+                </div>
+                
+            </div><p>總計:{{total}}元</p>
+        </div>
+        
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return{
+                    load:false,
+                    source:[],
+                    // product:[],
+                    count:[],
+                    // total:0,
+                    search:'',
+                    filter:0,
+                    min:0,
+                    max:0
+                }  
+            },
+            
+            created(){
+                //created: vue實體被建立完
+                this.getResource()
+            },
+            computed:{
+				product(){
+					let cache = this.source
+					if(this.min > 0 ){//篩選最小價錢
+						cache = cache.filter(item=>{
+							return item.price > this.min 
+						})
+					}
+					if(this.max > 0){//篩選最大價錢
+						cache = cache.filter(item=>{
+							return item.price < this.max
+						})
+					}
+                    if(this.min < 0  || this.max < 0){
+                        alert('腦殘嗎?');
+                        this.min = 0;
+                        this.max = 0;
+                    }
+					if(this.search !== ''){//篩選相符標題
+						cache = cache.filter(item=>{
+							return item.title.includes(this.search)
+						})
+					}
+					return cache
+				},
+                total(){
+                    let total = 0
+                    for( const countIndex in this.product){
+                        total += this.count[countIndex] * this.product[countIndex]['price']
+                    }
+                    return parseInt(total)
+                }
+            },
+            watch:{
+                total: {
+                    handler: function(newVal, oldVal){
+                        console.log(oldVal);
+                        console.log(newVal);
+                        if(newVal >1000){
+                            console.log('你要吃土了')
+                        }
+                    },
+                    deep: true
+                },
+            },
+            //以下練習JS 篩選可以console.log看看
+            //[1, 2, 3].filter(num => num >2);
+            //['1', '2', '3', '4', '5', '6'].filter(items => items.includes('2'));
+            //['111', '112', '23', '14', '52', '116'].filter(items => items.includes('2'));
+        
+            methods:{
+                parsePrice(price){
+                    return `TWD ${price*33}`
+                },
+                getResource(){
+                    this.load = true
+                    fetch('https://fakestoreapi.com/products')
+                    .then(res=>res.json())
+                    .then(json=>{
+                        this.source = json
+                        //處使化商品數量
+                        for(item in this.product){
+                            this.count.push(0)
+                        }
+                        this.load = false
+                    })
+                },
+                addCount(index){
+                    this.count[index] += 1
+                    this.sumTotal()
+                },
+                reduceCount(index){
+                    if(this.count <= 0) return
+                    this.count[index] -=1
+                    this.sumTotal()
+                },
+                // sumTotal(){
+                //     this.total = 0
+                //     //this.total +=this.count[0]*this.product[0]['price']
+                //     //this.total +=this.count[1]*this.product[1]['price']
+                //     for( const countIndex in this.product){
+                //         this.total += this.count[countIndex] * this.product[countIndex]['price']
+                //     }
+                //     this.total = parseInt(this.total)
+                    
+                //     // this.count.map((item,index)=>{
+                //     //     //item : 商品數量
+                //     //     //index: 陣列位置
+                //         //this.product[index]:商品資訊
+                //         //this.product[index]['price'] :商品價錢
+                //     //     console.log(this.product[index]['price'] + ':' + item);
+                //     // })
+
+                //     // 想法2
+                //     // this.product.map((item, index)=>{
+                //     //     console.log(this.count[index] + ':' +item.price);
+                //     // })
+                }
+            }
+        ).mount('#app')
+    </script>
+</body>
+</html>

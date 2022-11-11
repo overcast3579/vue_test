@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue3 calculator</title>
+    <style>
+        #app{
+            padding: 10px;
+            border: 1px solid blue;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <span>{{current || '0'}}</span>
+        <button class="operator" @click="reduce">-</button>
+        <button class="operator" @click="add">+</button>
+        <button class="operator" @click="times">X</button>
+        <button class="operator" @click="divide">/</button>
+        <button class="operator" @click="clear">C</button>
+        <button class="operator" @click="calc">=</button>
+        <button v-for="num in 9" :key ="num" @click="append(num)">
+            {{num}}
+        </button>
+        <button @click="keyin=0" class="zero">0</button>
+        
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        console.log(Vue);
+        Vue.createApp({
+            data(){
+                return{
+                    current: '',
+                    previous: null,
+                    operator : null,
+                    operatorClicked: false,
+                }  
+            },
+            methods:{
+                append(num){
+                    if(this.operatorClicked){
+                        this.current = '';
+                        this.operatorClicked = false;
+                    }
+                    this.current = `${this.current}${num}`
+                },
+                setPrevious(){
+                    this.previos = this.current;
+                    this.operatorClicked = true;
+                },
+                add(){
+                    this.operator = (a,b) => a + b;
+                    this.setPrevious();
+                },
+                reduce(){
+                    this.operator = (a, b) => a - b;
+                    this.setPrevious();
+                },
+                times(){
+                    this.operator = (a, b) => a * b;
+                    this.setPrevious();
+                },
+                divide(){
+                    this.operator = (a, b) => a / b;
+                    this.setPrevious();
+                },
+                calc(){
+                    this.current = `${this.operator (parseFloat(this.current), parseFloat(this.previos))}`;
+                    this.previos = null;
+                },
+                clear(){
+                    this.current = '' ;
+                },
+                
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
