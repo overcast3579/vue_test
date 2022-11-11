@@ -16,12 +16,12 @@
 <body>
     <div id="app">
         <span>{{current || '0'}}</span>
-        <button class="operator" @click="reduce">-</button>
-        <button class="operator" @click="add">+</button>
-        <button class="operator" @click="times">X</button>
-        <button class="operator" @click="divide">/</button>
-        <button class="operator" @click="clear">C</button>
-        <button class="operator" @click="calc">=</button>
+        <button @click="reduce">-</button>
+        <button @click="add">+</button>
+        <button @click="times">X</button>
+        <button @click="divide">/</button>
+        <button @click="clear">C</button>
+        <button @click="calc">=</button>
         <button v-for="num in 9" :key ="num" @click="append(num)">
             {{num}}
         </button>
